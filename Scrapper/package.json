@@ -1,0 +1,11 @@
+{
+  "name": "scrapper",
+  "version": "1.0.0",
+  "description": "Node.js worker for scrapping reqres.in",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Semenov Anton",
+  "license": "ISC"
+}
