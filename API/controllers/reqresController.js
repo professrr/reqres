@@ -41,7 +41,13 @@ exports.createUser = async(req, res, next) => {
 
 exports.activateCrawler = async(req, res, next) => {
     try {
+        const {rabbit} = req.app.locals
 
+        const result = await rabbit.sendMessageToQ({message: {'hello': 'world'}})
+
+        res.status(200).json({
+            result
+        })
     } catch(err) {
         next(err)
     }

@@ -10,6 +10,7 @@
   "author": "Semenov Anton",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.8.0",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "express-mongo-sanitize": "^2.1.0",
