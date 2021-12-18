@@ -5,39 +5,42 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
+      MONGO_INITDB_DATABASE: $DATABASE_NAME
     ports:
-      - 27018:27017
-
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    restart: always
-    depends_on:
-      - "mongodb"
-    ports:
-      - 5674:5672
-      - 15674:15672
-
-  api:
-    build: ./API
-    command: bash -c "npm install && npm start"         
-    restart: always
-    depends_on:
-      - "rabbitmq"
-    network_mode: "host"
+      - $DATABASE_PORT:27017
     volumes:
-      - ./API:/node
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+  # rabbitmq:
+  #   image: rabbitmq:3-management-alpine
+  #   restart: always
+  #   depends_on:
+  #     - "mongodb"
+  #   ports:
+  #     - 5674:5672
+  #     - 15674:15672
+
+  # api:
+  #   build: ./API
+  #   command: bash -c "npm install && npm start"         
+  #   restart: always
+  #   depends_on:
+  #     - "rabbitmq"
+  #   network_mode: "host"
+  #   volumes:
+  #     - ./API:/node
   
-  scrapper:
-    build: ./Scrapper
-    command: bash -c "npm install && npm start"         
-    restart: always
-    depends_on:
-      - "api"
-    network_mode: "host"
-    volumes:
-      - ./Scrapper:/node
+  # scrapper:
+  #   build: ./Scrapper
+  #   command: bash -c "npm install && npm start"         
+  #   restart: always
+  #   depends_on:
+  #     - "api"
+  #   network_mode: "host"
+  #   volumes:
+  #     - ./Scrapper:/node
 
   # frontend:
 
