@@ -1,0 +1,24 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Node.js Express API",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js nostack"
+  },
+  "author": "Semenov Anton",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "express-mongo-sanitize": "^2.1.0",
+    "express-rate-limit": "^5.5.1",
+    "helmet": "^4.6.0",
+    "hpp": "^0.2.3",
+    "mongodb": "^4.2.2",
+    "nodemon": "^2.0.15",
+    "query-string": "^7.0.1",
+    "wuzzy": "^0.1.8"
+  }
+}
