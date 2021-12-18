@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 27018:27017
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    restart: always
+    depends_on:
+      - "mongodb"
+    ports:
+      - 5674:5672
+      - 15674:15672
+
+  api:
+    build: ./API
+    command: bash -c "npm install && npm start"         
+    restart: always
+    depends_on:
+      - "rabbitmq"
+    network_mode: "host"
+    volumes:
+      - ./API:/node
+  
+  scrapper:
+    build: ./Scrapper
+    command: bash -c "npm install && npm start"         
+    restart: always
+    depends_on:
+      - "api"
+    network_mode: "host"
+    volumes:
+      - ./Scrapper:/node
+
+  # frontend:
+
