@@ -15,14 +15,14 @@ services:
     volumes:
       - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
 
-  # rabbitmq:
-  #   image: rabbitmq:3-management-alpine
-  #   restart: always
-  #   depends_on:
-  #     - "mongodb"
-  #   ports:
-  #     - 5674:5672
-  #     - 15674:15672
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    restart: always
+    depends_on:
+      - "mongodb"
+    ports:
+      - $RABBIT_PORT:5672
+      - $RABBIT_UI_PORT:15672
 
   # api:
   #   build: ./API
