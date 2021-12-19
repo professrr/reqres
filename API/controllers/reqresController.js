@@ -41,9 +41,14 @@ exports.createUser = async(req, res, next) => {
 
 exports.activateCrawler = async(req, res, next) => {
     try {
+        const {status} = req.body
+
+        if(status === undefined)
+            throw new AppError(404, 'fail', 'Обязательный body параметр: status')
+
         const {rabbit} = req.app.locals
 
-        const result = await rabbit.sendMessageToQ({message: {'hello': 'world'}})
+        const result = await rabbit.sendMessageToQ({message: {status}})
 
         res.status(200).json({
             result

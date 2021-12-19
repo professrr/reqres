@@ -5,7 +5,7 @@ class Rabbit {
         this.host = host
         this.port = port
         this.q = q_name
-        this.options = {durable: true}
+        this.options = {durable: true, maxLength: 1}
     }
 
     initConnection() {
@@ -25,7 +25,7 @@ class Rabbit {
     sendMessageToQ({message}) {
         return new Promise(async(resolve, reject) => {
             try {
-                await this.channel.assertQueue(this.q)
+                await this.channel.assertQueue(this.q, this.options)
                 const qmessage = JSON.stringify(message)
                 const result = this.channel.sendToQueue(this.q, Buffer.from(qmessage, 'utf-8'))
                 resolve(result)
