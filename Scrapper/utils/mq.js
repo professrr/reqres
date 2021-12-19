@@ -5,7 +5,7 @@ class Rabbit {
         this.host = host
         this.port = port
         this.q = q_name
-        this.options = {durable: true}
+        this.options = {durable: true, maxLength: 1}
     }
 
     initConnection() {
@@ -15,6 +15,7 @@ class Rabbit {
                 const channel = await q_connection.createChannel()
                 await channel.assertQueue(this.q, this.options)
                 this.channel = channel
+                console.log('RabbitMQ is connected')
                 resolve(channel)
             } catch(err) {
                 reject(err)
