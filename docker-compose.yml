@@ -1,5 +1,9 @@
 version: '3'
 
+networks:
+  inet:
+    driver: bridge
+
 services:
   mongodb:
     image: mongo
@@ -12,6 +16,8 @@ services:
       MONGO_INITDB_DATABASE: $DATABASE_NAME
     ports:
       - $DATABASE_PORT:27017
+    networks:
+      - inet
     volumes:
       - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
 
@@ -23,26 +29,62 @@ services:
     ports:
       - $RABBIT_PORT:5672
       - $RABBIT_UI_PORT:15672
+    networks:
+      - inet
 
-  # api:
-  #   build: ./API
-  #   command: bash -c "npm install && npm start"         
-  #   restart: always
-  #   depends_on:
-  #     - "rabbitmq"
-  #   network_mode: "host"
-  #   volumes:
-  #     - ./API:/node
+  api:
+    build: ./API
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
+      DATABASE_URI: $DATABASE_URI
+      DATABASE_USER: $DATABASE_USER
+      DATABASE_PASSWORD: $DATABASE_PASSWORD
+      DATABASE_NAME: $DATABASE_NAME
+      DATABASE_HOST: mongodb
+      DATABASE_PORT: 27017
+      RABBIT_HOST: rabbitmq
+      RABBIT_PORT: 5672
+      RABBIT_UI_PORT: $RABBIT_UI_PORT
+      RABBIT_Q_NAME: $RABBIT_Q_NAME
+      API_PORT: $API_PORT
+      FRONTEND_PORT: $FRONTEND_PORT
+    command: bash -c "npm install && npm start"         
+    restart: always
+    ports:
+      - $API_PORT:$API_PORT
+    networks:
+      - inet
+    depends_on:
+      - "rabbitmq"
+    volumes:
+      - ./API:/node
   
-  # scrapper:
-  #   build: ./Scrapper
-  #   command: bash -c "npm install && npm start"         
-  #   restart: always
-  #   depends_on:
-  #     - "api"
-  #   network_mode: "host"
-  #   volumes:
-  #     - ./Scrapper:/node
+  scrapper:
+    build: ./Scrapper
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
+      DATABASE_URI: $DATABASE_URI
+      DATABASE_USER: $DATABASE_USER
+      DATABASE_PASSWORD: $DATABASE_PASSWORD
+      DATABASE_NAME: $DATABASE_NAME
+      DATABASE_HOST: mongodb
+      DATABASE_PORT: 27017
+      RABBIT_HOST: rabbitmq
+      RABBIT_PORT: 5672
+      RABBIT_UI_PORT: $RABBIT_UI_PORT
+      RABBIT_Q_NAME: $RABBIT_Q_NAME
+      API_PORT: $API_PORT
+      FRONTEND_PORT: $FRONTEND_PORT
+    command: bash -c "npm install && npm start"         
+    restart: always
+    depends_on:
+      - "api"
+    networks:
+      - inet
+    volumes:
+      - ./Scrapper:/node
 
   # frontend:
 
