@@ -20,4 +20,14 @@ mongo -- "$MONGO_INITDB_DATABASE" <<EOF
             ]
         }
     );
+
+    use $MONGO_INITDB_DATABASE
+    db.users.createIndex(
+        {
+            "id": 1
+        },
+        {
+            unique: true
+        }
+    )
 EOF
