@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js nostack"
+    "start": "node server.js"
   },
   "author": "Semenov Anton",
   "license": "ISC",
@@ -18,6 +18,7 @@
     "helmet": "^4.6.0",
     "hpp": "^0.2.3",
     "mongodb": "^4.2.2",
+    "dotenv": "^10.0.0",
     "nodemon": "^2.0.15",
     "query-string": "^7.0.1",
     "wuzzy": "^0.1.8"
