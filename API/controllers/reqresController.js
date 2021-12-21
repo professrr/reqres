@@ -1,11 +1,11 @@
 const AppError = require('../utils/appError');
-const reqresModel = require('../models/reqresModel');
+const userModel = require('../models/userModel');
 
 exports.getUsers = async(req, res, next) => {
     try {
         const {page, page_size, search_str} = req.query
 
-        const users = await reqresModel.getUsers({
+        const users = await userModel.getUsers({
             search_str,
             db: req.app.locals.db,
             page, page_size
@@ -27,7 +27,7 @@ exports.createUser = async(req, res, next) => {
         if(!id || !email || !first_name || !last_name || !avatar)
             throw new AppError(404, 'fail', 'Обязательные body параметры: id, email, first_name, last_name, avatar')
 
-        const user = await reqresModel.createUser({
+        const user = await userModel.createUser({
             db: req.app.locals.db,
             id, email, first_name, last_name, avatar
         })
