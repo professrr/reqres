@@ -5,9 +5,9 @@ const {MongoError} = require('mongodb')
 class Crawler {
     constructor() {
         this.status = false // Status of Crawler: false -> do not crawl / true -> crawl
-        this.delay_time = 10000 // 10 sec
-        this.total_pages = 1 // 12 reqres.in total_pages
-        this.per_page = 12 // 1 User per page
+        this.delay_time = 60000 // 1 min
+        this.total_pages = 12 // 12 reqres.in total_pages
+        this.per_page = 1 // 1 User per page
         this.current_page = 1 // Curent reqres.in page
         this.batch_size = 2 // Chunk size of urls
         this.max_retries = 3 // Max retries if URL unreachable
