@@ -23,6 +23,7 @@ exports.getPagination = ({
 }
 
 exports.getUsers = ({
+    search_str,
     db,
     page,
     page_size
@@ -31,7 +32,23 @@ exports.getUsers = ({
         try {
             const User = db.collection('users')
 
-            const users = await User
+            const users = search_str !== undefined ? await User.aggregate([{
+                                        $addFields: {
+                                            "full_name": { $concat: [ "$first_name", ' ', "$last_name" ] }
+                                        }
+                                    }, {
+                                        $match: {
+                                            "$or": [
+                                                {"first_name": new RegExp(search_str, 'i')},
+                                                {"last_name": new RegExp(search_str, 'i')},
+                                                {"full_name": new RegExp(search_str, 'i')}
+                                            ]    
+                                        }    
+                                    }])
+                                .limit(page_size ? parseInt(page_size) : 10)
+                                .skip(((page ? parseInt(page)-1 : 0) * (page_size ? parseInt(page_size) : 10)))
+                                .sort({_id: -1}) : 
+                            await User
                                 .find()
                                 .limit(page_size ? parseInt(page_size) : 10)
                                 .skip(((page ? parseInt(page)-1 : 0) * (page_size ? parseInt(page_size) : 10)))

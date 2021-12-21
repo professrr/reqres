@@ -3,9 +3,10 @@ const reqresModel = require('../models/reqresModel');
 
 exports.getUsers = async(req, res, next) => {
     try {
-        const {page, page_size} = req.query
+        const {page, page_size, search_str} = req.query
 
         const users = await reqresModel.getUsers({
+            search_str,
             db: req.app.locals.db,
             page, page_size
         })
