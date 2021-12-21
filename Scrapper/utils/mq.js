@@ -11,7 +11,7 @@ class Rabbit {
     initConnection() {
         return new Promise(async(resolve, reject) => {
             try {
-                const q_connection = await amqplib.connect(`amqp://${this.host}:${this.port}`)
+                const q_connection = await amqplib.connect(`amqp://${this.host}:${this.port}`, {timeout: 1000})
                 const channel = await q_connection.createChannel()
                 await channel.assertQueue(this.q, this.options)
                 this.channel = channel
