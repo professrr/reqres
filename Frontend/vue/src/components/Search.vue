@@ -35,8 +35,7 @@ export default {
         }
 
         const searh = () => {
-            if(search_value.value)
-                store.dispatch('User/ajaxGetUsers', {search_str: search_value.value, page_size: 12});
+            store.dispatch('User/ajaxGetUsers', {search_str: search_value.value, page_size: 12});
         }
 
         return {crawler_is_active, crawler_click, search_value, searh}
