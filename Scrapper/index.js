@@ -49,3 +49,16 @@ MongoClient.connect(db_uri, async(err, client) => {
     
     main({crawler, channel})
 })
+
+
+process.on('uncaughtException', err => {
+    console.log('UNCAUGHT EXCEPTION!!! shutting down...')
+    console.log(err)
+    process.exit(1)
+});
+
+process.on('unhandledRejection', err => {
+    console.log('UNHANDLED REJECTION!!!  shutting down ...')
+    console.log(err)
+    process.exit(1)
+});
