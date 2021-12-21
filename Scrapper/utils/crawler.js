@@ -64,7 +64,7 @@ class Crawler {
     crawl({urls}) {
         return new Promise(async(resolve, reject) => {
             try {
-                const total_only_successful = await parseVersionJS(urls, this.batch_size, this.delay_time, this.max_retries)
+                const total_only_successful = await parseVersionJS(urls, this.batch_size, 1000, this.max_retries)
                 resolve(total_only_successful)
             } catch(err) {
                 reject(err)
